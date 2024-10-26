@@ -3,7 +3,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // Domain
     implementation(project(":domain:auth"))
+    implementation(project(":domain:user"))
 
     //db
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -19,7 +21,7 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 
     //OpenApi
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0")
 
     testImplementation("org.springframework.security:spring-security-test")
 }
