@@ -4,6 +4,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 
     // Domain
+    implementation(project(":core:jpa"))
     implementation(project(":domain:auth"))
     implementation(project(":domain:user"))
 

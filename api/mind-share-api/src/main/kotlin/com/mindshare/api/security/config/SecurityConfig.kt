@@ -3,6 +3,8 @@ package com.mindshare.api.security.config
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
@@ -11,10 +13,15 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher
 class SecurityConfig {
 
     @Bean
+    fun passwordEncoder(): PasswordEncoder =
+        BCryptPasswordEncoder()
+
+    @Bean
     fun ignoredMatchers(): OrRequestMatcher {
         return OrRequestMatcher(
             AntPathRequestMatcher("/v3/api-docs/**"),
-            AntPathRequestMatcher("/swagger-ui/**")
+            AntPathRequestMatcher("/swagger-ui/**"),
+            AntPathRequestMatcher("/account/signup/**")
         )
     }
 

@@ -1,6 +1,8 @@
 package com.mindshare.domain.auth
 
 interface AccountRepository {
-    fun findByUserId(userid: String): Account?
+    fun save(account: Account) : Account
+    fun delete(account: Account)
+    fun findByUserId(userid: Long): Account?
     fun findByLoginIdAndAccountProvider(loginId: String, accountProvider: AccountProvider): Account?
 }

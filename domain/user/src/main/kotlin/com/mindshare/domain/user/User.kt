@@ -8,6 +8,11 @@ import jakarta.persistence.*
 class User(
     nickname : String,
     userType: UserType = UserType.USER,
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    var id: Long? = null
 ) : TimeAuditableEntity() {
 
     @Column(name = "NICKNAME")
@@ -18,12 +23,6 @@ class User(
     @Enumerated(EnumType.STRING)
     var userType: UserType = userType
     private set
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    var id: Long? = null
-        private set
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
