@@ -19,3 +19,8 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+auth:
+  secret-key: ${JWT_SECRET}
+  access-token-ttl: ${ACCESS_TOKEN_TTL}
+  refresh-token-ttl: ${REFRESH_TOKEN_TTL}
