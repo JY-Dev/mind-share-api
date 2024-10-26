@@ -15,6 +15,7 @@ class User(
         private set
 
     @Column(name = "USER_TYPE")
+    @Enumerated(EnumType.STRING)
     var userType: UserType = userType
     private set
 
