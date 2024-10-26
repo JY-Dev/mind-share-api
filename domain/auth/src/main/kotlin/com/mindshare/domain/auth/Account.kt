@@ -18,13 +18,13 @@ class Account(
     @Column(name = "ACCOUNT_PROVIDER")
     val accountProvider: AccountProvider = AccountProvider.EMAIL,
 
-    ) : TimeAuditableEntity() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     var id: Long? = null
-    private set
+
+    ) : TimeAuditableEntity() {
+
 
     @Column(name = "LOGIN_ID")
     var loginId: String = loginId

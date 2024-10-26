@@ -21,17 +21,16 @@ class AuthRefreshToken(
     @Convert(converter = InstantToUtcConverter::class)
     private var expirationTime: Instant = Instant.now(),
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    var id: Long? = null
+
 
 ) : TimeAuditableEntity() {
 
     @Column(name = "TOKEN", unique = true)
     var token: String = UUID.randomUUID().toString()
-    private set
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    var id: Long? = null
     private set
 
     fun isExpired(now: Instant): Boolean =

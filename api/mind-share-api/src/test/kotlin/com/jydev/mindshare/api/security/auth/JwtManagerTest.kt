@@ -21,7 +21,7 @@ class JwtManagerTest {
     private val objectMapper = ObjectMapper().registerKotlinModule()
 
     @BeforeEach
-    fun `설정 초기화`() {
+    fun setup() {
         val authProperties = mock(AuthProperties::class.java).apply {
             `when`(secretKey).thenReturn("my-secret-key-which-is-very-secret-and-long-enough")
             `when`(accessTokenTtl).thenReturn(Duration.ofMinutes(5))
