@@ -11,7 +11,7 @@ import java.time.Instant
 @EntityListeners(value = [AuditingEntityListener::class])
 abstract class TimeAuditableEntity(
     @CreatedDate
-    @Column(name = "CT_UTC", updatable = false)
+    @Column(name = "CT_UTC")
     @Convert(converter = InstantToUtcConverter::class)
     protected var creationTime: Instant = Instant.now(),
 
