@@ -1,10 +1,9 @@
 package com.mindshare.domain.auth
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito
 
 class AccountTest {
 
@@ -69,49 +68,4 @@ class AccountTest {
         assertEquals(account.hashCode(), anotherAccount.hashCode(), "동일한 ID를 가진 객체는 동일한 해시코드를 반환해야 합니다.")
     }
 
-    @Test
-    fun `authenticate 메서드가 올바른 인증기로 성공적인 인증을 수행하는지 확인`() {
-        // given
-        val authenticator = Mockito.mock(AccountAuthenticator::class.java).apply {
-            Mockito.`when`(this.accountProvider).thenReturn(AccountProvider.EMAIL)
-            Mockito.`when`(this.support(AccountProvider.EMAIL)).thenReturn(true)
-            Mockito.`when`(this.authenticate(loginId, credential)).thenReturn(true)
-        }
-
-        // when & then
-        assertDoesNotThrow {
-            account.authenticate(listOf(authenticator))
-        }
-    }
-
-    @Test
-    fun `authenticate 메서드가 인증기를 찾지 못하면 예외를 발생시키는지 확인`() {
-        // given
-        val unsupportedAuthenticator = Mockito.mock(AccountAuthenticator::class.java).apply {
-            Mockito.`when`(this.accountProvider).thenReturn(AccountProvider.EMAIL)
-            Mockito.`when`(this.support(AccountProvider.EMAIL)).thenReturn(false)
-        }
-
-        // when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            account.authenticate(listOf(unsupportedAuthenticator))
-        }
-        assertEquals("Account not supported. Provider : $accountProvider", exception.message)
-    }
-
-    @Test
-    fun `authenticate 메서드가 인증 실패 시 예외를 발생시키는지 확인`() {
-        // given
-        val authenticator = Mockito.mock(AccountAuthenticator::class.java).apply {
-            Mockito.`when`(this.accountProvider).thenReturn(AccountProvider.EMAIL)
-            Mockito.`when`(this.support(AccountProvider.EMAIL)).thenReturn(true)
-            Mockito.`when`(this.authenticate(loginId, credential)).thenReturn(false)
-        }
-
-        // when & then
-        val exception = assertThrows<IllegalStateException> {
-            account.authenticate(listOf(authenticator))
-        }
-        assertEquals("Account not authenticated. Authenticator: $authenticator", exception.message)
-    }
 }

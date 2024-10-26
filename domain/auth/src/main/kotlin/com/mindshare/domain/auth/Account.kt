@@ -23,7 +23,7 @@ class Account(
     @Column(name = "ID")
     var id: Long? = null
 
-    ) : TimeAuditableEntity() {
+) : TimeAuditableEntity() {
 
 
     @Column(name = "LOGIN_ID")
@@ -33,21 +33,6 @@ class Account(
     @Column(name = "CREDENTIAL")
     var credential: String = credential
         private set
-
-    fun authenticate(accountAuthenticators: List<AccountAuthenticator>) {
-
-        val supportAuthenticator : (AccountAuthenticator) -> Boolean = { authenticator ->
-            authenticator.support(this.accountProvider)
-        }
-
-        val authenticator = accountAuthenticators.find(supportAuthenticator)
-            ?: throw IllegalArgumentException("Account not supported. Provider : $accountProvider")
-
-        val isAuthenticated = authenticator.authenticate(this.loginId, this.credential)
-        if (isAuthenticated.not()) {
-            throw IllegalStateException("Account not authenticated. Authenticator: $authenticator")
-        }
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
