@@ -1,4 +1,4 @@
-package com.jydev.mindshare.config
+package com.mindshare.api.config
 
 import com.querydsl.jpa.JPQLTemplates
 import com.querydsl.jpa.impl.JPAQueryFactory

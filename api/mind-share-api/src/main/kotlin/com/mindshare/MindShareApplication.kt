@@ -1,4 +1,4 @@
-package com.jydev.mindshare
+package com.mindshare
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

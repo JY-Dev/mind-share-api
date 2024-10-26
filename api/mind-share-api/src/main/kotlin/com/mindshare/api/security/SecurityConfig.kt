@@ -1,4 +1,4 @@
-package com.jydev.mindshare.security
+package com.mindshare.api.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

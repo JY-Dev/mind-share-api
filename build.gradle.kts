@@ -9,7 +9,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6" apply false
 }
 
-group = "com.jydev"
+group = "com.mindshare"
 version = "1.0.0"
 
 allprojects {

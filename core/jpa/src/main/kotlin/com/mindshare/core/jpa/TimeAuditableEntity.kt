@@ -1,6 +1,6 @@
-package com.jydev.mindshare.core.jpa
+package com.mindshare.core.jpa
 
-import com.jydev.mindshare.core.jpa.converter.InstantToUtcConverter
+import com.mindshare.core.jpa.converter.InstantToUtcConverter
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate

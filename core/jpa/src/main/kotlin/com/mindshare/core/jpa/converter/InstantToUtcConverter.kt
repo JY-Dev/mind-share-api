@@ -1,4 +1,4 @@
-package com.jydev.mindshare.core.jpa.converter
+package com.mindshare.core.jpa.converter
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
