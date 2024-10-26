@@ -1,0 +1,28 @@
+
+services:
+  mind-share-api:
+    env_file:
+      - ./api/mind-share-api/env/local.env
+    image: mind-share-api:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - mind-share
+  db:
+    image: mind-share-db:latest
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - mind-share
+    ports:
+      - "3306:3306"
+
+networks:
+  mind-share:
+    driver: bridge
