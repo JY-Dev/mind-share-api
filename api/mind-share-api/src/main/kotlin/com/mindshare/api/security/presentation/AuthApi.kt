@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
@@ -41,6 +42,7 @@ interface AuthApi {
     @PostMapping("/login/email")
     fun loginEmail(@RequestBody request: LoginEmailRequest) : LoginResponse
 
+
     @Operation(
         summary = "로그아웃",
         description = """
@@ -55,6 +57,7 @@ interface AuthApi {
         ApiResponse(responseCode = "500", description = "서버 오류",
             content = [Content(schema = Schema(implementation = ErrorResponse::class))])
     )
+    @SecurityRequirement(name = "AccessToken")
     @PostMapping("/logout")
     fun logout(@AuthenticationPrincipal userId : Long)
 

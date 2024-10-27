@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -38,6 +39,7 @@ interface UserApi {
             content = [Content(schema = Schema(implementation = ErrorResponse::class))]
         )
     )
+    @SecurityRequirement(name = "AccessToken")
     @PatchMapping("/nickname")
     fun changeNickname(@RequestBody @Valid request : ChangeNicknameRequest, @AuthenticationPrincipal userId : Long)
 }
