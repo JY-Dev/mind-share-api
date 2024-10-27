@@ -3,9 +3,9 @@ package com.jydev.mindshare.api.security.auth
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.mindshare.api.security.config.AuthProperties
-import com.mindshare.api.security.auth.JwtManager
-import com.mindshare.api.security.auth.JwtManager.Companion.resolveBearerToken
-import com.mindshare.api.security.auth.JwtManager.TokenPayload
+import com.mindshare.api.security.auth.token.JwtHelper
+import com.mindshare.api.security.auth.token.JwtHelper.Companion.resolveBearerToken
+import com.mindshare.api.security.auth.token.JwtHelper.TokenPayload
 import com.mindshare.domain.user.UserType
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -14,10 +14,10 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import java.time.Duration
 
-class JwtManagerTest {
+class JwtHelperTest {
 
-    private lateinit var jwtManager: JwtManager
-    private lateinit var shortTtlJwtManager: JwtManager
+    private lateinit var jwtHelper: JwtHelper
+    private lateinit var shortTtlJwtHelper: JwtHelper
     private val objectMapper = ObjectMapper().registerKotlinModule()
 
     @BeforeEach
@@ -30,8 +30,8 @@ class JwtManagerTest {
             `when`(secretKey).thenReturn("my-secret-key-which-is-very-secret-and-long-enough")
             `when`(accessTokenTtl).thenReturn(Duration.ofMillis(10))
         }
-        jwtManager = JwtManager(authProperties, objectMapper)
-        shortTtlJwtManager = JwtManager(shortTtlProperties, objectMapper)
+        jwtHelper = JwtHelper(authProperties, objectMapper)
+        shortTtlJwtHelper = JwtHelper(shortTtlProperties, objectMapper)
     }
 
     @Test
@@ -44,7 +44,7 @@ class JwtManagerTest {
         )
 
         // when
-        val token = jwtManager.issueToken(payload)
+        val token = jwtHelper.issueToken(payload)
 
         // then
         assertNotNull(token, "토큰이 정상적으로 발급되었는지 확인합니다.")
@@ -58,10 +58,10 @@ class JwtManagerTest {
             userType = UserType.USER,
             sessionId = "session-123"
         )
-        val token = jwtManager.issueToken(payload)
+        val token = jwtHelper.issueToken(payload)
 
         // when
-        val isValid = jwtManager.isValidToken(token)
+        val isValid = jwtHelper.isValidToken(token)
 
         // then
         assertTrue(isValid, "발급된 토큰이 유효한지 확인합니다.")
@@ -75,12 +75,12 @@ class JwtManagerTest {
             userType = UserType.USER,
             sessionId = "session-123"
         )
-        val expiredToken = shortTtlJwtManager.issueToken(payload)
+        val expiredToken = shortTtlJwtHelper.issueToken(payload)
 
         Thread.sleep(500)
 
         // when
-        val isValid = shortTtlJwtManager.isValidToken(expiredToken)
+        val isValid = shortTtlJwtHelper.isValidToken(expiredToken)
 
         // then
         assertFalse(isValid, "만료된 토큰이 유효하지 않음을 확인합니다.")
@@ -94,13 +94,13 @@ class JwtManagerTest {
             userType = UserType.USER,
             sessionId = "session-123"
         )
-        val oldToken = jwtManager.issueToken(payload)
+        val oldToken = jwtHelper.issueToken(payload)
 
         // when
-        val newToken = jwtManager.reIssueToken(oldToken)
+        val newToken = jwtHelper.reIssueToken(oldToken)
 
-        val oldPayload = jwtManager.getPayload(oldToken)
-        val newPayload = jwtManager.getPayload(newToken)
+        val oldPayload = jwtHelper.getPayload(oldToken)
+        val newPayload = jwtHelper.getPayload(newToken)
         // then
         assertNotNull(newToken, "재발급된 토큰이 정상적으로 존재하는지 확인합니다.")
         assertEquals(oldPayload, newPayload, "재발급된 토큰의 페이로드가 이전 토큰과 깉은지 확인합니다.")
@@ -113,7 +113,7 @@ class JwtManagerTest {
 
         // when & then
         assertThrows(Exception::class.java) {
-            jwtManager.reIssueToken(invalidToken)
+            jwtHelper.reIssueToken(invalidToken)
         }
     }
 

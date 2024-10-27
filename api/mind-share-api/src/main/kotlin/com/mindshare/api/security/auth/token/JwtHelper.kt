@@ -1,4 +1,4 @@
-package com.mindshare.api.security.auth
+package com.mindshare.api.security.auth.token
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.mindshare.api.security.config.AuthProperties
@@ -14,7 +14,7 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Component
-class JwtManager(
+class JwtHelper(
     private val authProperties: AuthProperties,
     private val objectMapper: ObjectMapper
 ) {

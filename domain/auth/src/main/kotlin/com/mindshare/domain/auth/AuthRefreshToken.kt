@@ -14,12 +14,12 @@ class AuthRefreshToken(
     @Column(name = "USER_ID", unique = true)
     val userId: Long,
 
-    @Column(name = "SESSION_ID")
-    private val sessionId: String = UUID.randomUUID().toString(),
-
     @Column(name = "EXPIRATION_TIME")
     @Convert(converter = InstantToUtcConverter::class)
-    private var expirationTime: Instant = Instant.now(),
+    private var expirationTime: Instant,
+
+    @Column(name = "SESSION_ID")
+    val sessionId: String = UUID.randomUUID().toString(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
