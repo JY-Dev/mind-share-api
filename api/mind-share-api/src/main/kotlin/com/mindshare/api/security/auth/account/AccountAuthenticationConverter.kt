@@ -13,8 +13,8 @@ class AccountAuthenticationConverter(
 ) : AuthenticationConverter{
 
 
-    override fun convert(request: HttpServletRequest): Authentication {
-        val provider = extractProviderFromURI(request.requestURI)
+    override fun convert(request: HttpServletRequest): Authentication? {
+        val provider = extractProviderFromURI(request.requestURI) ?: return null
 
         return when (provider) {
             AccountProvider.EMAIL -> {
@@ -24,10 +24,9 @@ class AccountAuthenticationConverter(
         }
     }
 
-    private fun extractProviderFromURI(requestURI: String): AccountProvider {
-        val providerParam = requestURI.removePrefix("/auth/login/")
-
-        return AccountProvider.valueOf(providerParam.uppercase())
+    private fun extractProviderFromURI(requestURI: String): AccountProvider? {
+        val providerParam = requestURI.removePrefix("/auth/login/").uppercase()
+        return AccountProvider.entries.find { it.name == providerParam }
     }
 
     private fun <T> deserializeRequest(request: HttpServletRequest, clazz: Class<T>): T {

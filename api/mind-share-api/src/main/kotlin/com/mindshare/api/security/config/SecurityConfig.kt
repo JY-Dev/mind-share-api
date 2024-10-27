@@ -1,12 +1,18 @@
 package com.mindshare.api.security.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.mindshare.api.security.auth.UserAuthenticationFailHandler
+import com.mindshare.api.core.log.logger
+import com.mindshare.api.security.SecurityErrorCodeAuthenticationEntryPoint
 import com.mindshare.api.security.auth.UserAuthenticationSuccessHandler
 import com.mindshare.api.security.auth.account.AccountAuthenticationConverter
-import com.mindshare.api.security.auth.account.email.EmailAccountAuthenticationUseCase
 import com.mindshare.api.security.auth.account.email.EmailAccountAuthenticationProvider
+import com.mindshare.api.security.auth.account.email.EmailAccountAuthenticationUseCase
+import com.mindshare.api.security.auth.token.AuthTokenAuthenticationConverter
 import com.mindshare.api.security.auth.token.AuthTokenUseCase
+import com.mindshare.api.security.auth.token.JwtAuthenticationProvider
+import com.mindshare.api.security.auth.token.JwtHelper
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -14,23 +20,23 @@ import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.AuthenticationConverter
-import org.springframework.security.web.authentication.AuthenticationFailureHandler
-import org.springframework.security.web.authentication.AuthenticationFilter
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.*
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
 
 @Configuration
 class SecurityConfig {
 
+    private val log = logger()
+
     @Bean
-    fun passwordEncoder(): PasswordEncoder =
-        BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     fun ignoredMatchers(): OrRequestMatcher {
@@ -43,7 +49,12 @@ class SecurityConfig {
     }
 
     @Bean
-    fun filterChain(http: HttpSecurity, loginAuthenticationFilter: AuthenticationFilter): SecurityFilterChain {
+    fun filterChain(
+        http: HttpSecurity,
+        authenticationEntryPoint: AuthenticationEntryPoint,
+        authTokenAuthenticationFilter: AuthenticationFilter,
+        loginAuthenticationFilter: AuthenticationFilter
+    ): SecurityFilterChain {
         return http
             .csrf { it.disable() }
             .authorizeHttpRequests { authRequests ->
@@ -54,52 +65,50 @@ class SecurityConfig {
             .sessionManagement { session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
+            .addFilterBefore(authTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .exceptionHandling { exceptionHandling ->
+                exceptionHandling.authenticationEntryPoint(authenticationEntryPoint)
+            }
             .build()
     }
 
     @Bean
     fun loginAuthenticationFilter(
-        loginAuthenticationManger: AuthenticationManager,
-        loginAuthenticationConvertor: AuthenticationConverter,
-        loginSuccessHandler: AuthenticationSuccessHandler,
-        loginFailHandler : AuthenticationFailureHandler,
-    ): AuthenticationFilter = AuthenticationFilter(loginAuthenticationManger, loginAuthenticationConvertor).apply {
-        this.requestMatcher = AntPathRequestMatcher(LOGIN_PATH)
-        this.successHandler = loginSuccessHandler
-        this.failureHandler = loginFailHandler
-    }
-
-    @Bean
-    fun loginSuccessHandler(
-        authTokenUseCase: AuthTokenUseCase,
+        loginAuthenticationUseCase: EmailAccountAuthenticationUseCase,
         objectMapper: ObjectMapper,
-    ): AuthenticationSuccessHandler {
-        return UserAuthenticationSuccessHandler(authTokenUseCase, objectMapper)
+        authenticationEntryPoint: AuthenticationEntryPoint,
+        authTokenUseCase: AuthTokenUseCase,
+    ): AuthenticationFilter {
+        val loginAuthenticationManager = ProviderManager(listOf(EmailAccountAuthenticationProvider(loginAuthenticationUseCase)))
+        val loginAuthenticationConverter = AccountAuthenticationConverter(objectMapper)
+
+        return AuthenticationFilter(loginAuthenticationManager, loginAuthenticationConverter).apply {
+            requestMatcher = AntPathRequestMatcher(LOGIN_PATH)
+            successHandler = UserAuthenticationSuccessHandler(authTokenUseCase, objectMapper)
+            failureHandler = AuthenticationEntryPointFailureHandler(authenticationEntryPoint)
+        }
     }
 
     @Bean
-    fun loginFailHandler(
-        objectMapper: ObjectMapper
-    ): AuthenticationFailureHandler {
-        return UserAuthenticationFailHandler(objectMapper)
+    fun authTokenAuthenticationFilter(
+        jwtHelper: JwtHelper,
+        authenticationEntryPoint: AuthenticationEntryPoint,
+    ): AuthenticationFilter {
+        val jwtAuthenticationProvider = JwtAuthenticationProvider(jwtHelper)
+        val authTokenAuthenticationManager = ProviderManager(listOf(jwtAuthenticationProvider))
+        val authTokenAuthenticationConverter = AuthTokenAuthenticationConverter()
+
+        return AuthenticationFilter(authTokenAuthenticationManager, authTokenAuthenticationConverter).apply {
+            requestMatcher = NegatedRequestMatcher(ignoredMatchers())
+            successHandler = AuthenticationSuccessHandler { _, _, _ -> log.debug("Authentication successful") }
+            failureHandler = AuthenticationEntryPointFailureHandler(authenticationEntryPoint)
+        }
     }
 
     @Bean
-    fun loginAuthenticationConvertor(objectMapper: ObjectMapper): AuthenticationConverter =
-        AccountAuthenticationConverter(objectMapper)
-
-    @Bean
-    fun loginAuthenticationManger(
-        emailAuthenticationProvider: AuthenticationProvider
-    ): AuthenticationManager {
-        val providerList = listOf(emailAuthenticationProvider)
-        return ProviderManager(providerList)
-    }
-
-    @Bean
-    fun emailAuthenticationProvider(authenticationUseCase: EmailAccountAuthenticationUseCase): AuthenticationProvider {
-        return EmailAccountAuthenticationProvider(authenticationUseCase)
+    fun authenticationEntryPoint(objectMapper: ObjectMapper): AuthenticationEntryPoint {
+        return SecurityErrorCodeAuthenticationEntryPoint(objectMapper)
     }
 
     companion object {
