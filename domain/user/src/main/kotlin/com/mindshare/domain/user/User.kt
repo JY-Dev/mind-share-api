@@ -24,6 +24,10 @@ class User(
     var userType: UserType = userType
     private set
 
+    fun changeNickname(nickname: String) {
+        this.nickname = nickname
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is User) return false

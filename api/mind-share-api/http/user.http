@@ -1,0 +1,7 @@
+PATCH localhost:8080/user/nickname
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtaW5kLXNoYXJlIiwicGF5bG9hZCI6IntcInVzZXJJZFwiOjEsXCJ1c2VyVHlwZVwiOlwiVVNFUlwiLFwic2Vzc2lvbklkXCI6XCI2MGEyODA3NC03ZGU2LTQzN2UtYjhmZi1kNzJkYzYwODNiNDJcIn0iLCJpYXQiOjE3MzAwMjkzOTcsImV4cCI6MTczMDAyOTY5N30.pbjpX0ckYCGvk2iViYhqtsibarlWB2aJrxoEdVKX8gs
+
+{
+  "nickname" : "test41241"
+}
