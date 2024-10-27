@@ -6,3 +6,12 @@ Content-Type: application/json
   "email" : "test1234@test.com",
   "password" : "test1234"
 }
+
+### 토큰 재발급
+POST localhost:8080/auth/issue-token
+Content-Type: application/json
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtaW5kLXNoYXJlIiwicGF5bG9hZCI6IntcInVzZXJJZFwiOjEsXCJ1c2VyVHlwZVwiOlwiVVNFUlwiLFwic2Vzc2lvbklkXCI6XCJiMWNmYzgwZi01ZDhhLTRiNjEtYWEyMS0zYTZiZDdlNTMwOGVcIn0iLCJpYXQiOjE3MzAwMjY4MDAsImV4cCI6MTczMDAyNzEwMH0.KMTgUIXdZGZl055hadj1VJy69Wl6i922QbDc3kmQswo",
+  "refreshToken": "909804a1-7583-41fe-a695-2fc340b2ef5f"
+}

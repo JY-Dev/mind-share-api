@@ -45,6 +45,7 @@ class SecurityConfig {
             AntPathRequestMatcher("/swagger-ui/**"),
             AntPathRequestMatcher("/account/signup/**"),
             AntPathRequestMatcher("/auth/login/**"),
+            AntPathRequestMatcher("/auth/issue-token")
         )
     }
 
