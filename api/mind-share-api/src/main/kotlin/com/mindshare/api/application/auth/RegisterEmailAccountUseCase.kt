@@ -1,6 +1,9 @@
-package com.mindshare.api.application
+package com.mindshare.api.application.auth
 
+import com.mindshare.api.application.auth.error.DuplicateLoginIdException
+import com.mindshare.api.application.auth.error.DuplicateNicknameException
 import com.mindshare.domain.auth.Account
+import com.mindshare.domain.auth.AccountProvider
 import com.mindshare.domain.auth.AccountRepository
 import com.mindshare.domain.user.User
 import com.mindshare.domain.user.UserRepository
@@ -23,7 +26,13 @@ class RegisterEmailAccountUseCase(
     ) {
 
         val existsNickname = userRepository.existsByNickname(nickname)
-        if(existsNickname) throw IllegalStateException("Nickname already exists. nickname : $nickname")
+        if(existsNickname) throw DuplicateNicknameException("Nickname already exists. nickname : $nickname")
+
+        val existsLoginId = accountRepository.existsByLoginIdAndAccountProvider(
+            loginId = email,
+            accountProvider = AccountProvider.EMAIL
+        )
+        if(existsLoginId) throw DuplicateLoginIdException("already exists login id: $email")
 
         val user = User(nickname)
         val savedUser = userRepository.save(user)

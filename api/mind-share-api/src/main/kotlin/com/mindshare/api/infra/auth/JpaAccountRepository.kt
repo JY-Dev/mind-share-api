@@ -1,4 +1,4 @@
-package com.mindshare.api.infra.account
+package com.mindshare.api.infra.auth
 
 import com.mindshare.domain.auth.Account
 import com.mindshare.domain.auth.AccountRepository
