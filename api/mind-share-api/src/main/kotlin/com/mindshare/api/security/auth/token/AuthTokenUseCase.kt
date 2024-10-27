@@ -74,4 +74,8 @@ class AuthTokenUseCase(
         return AuthToken(newAccessToken, newRefreshToken)
     }
 
+    @Transactional
+    fun expireToken(userId : Long) {
+        refreshTokenRepository.findByUserId(userId)?.let(refreshTokenRepository::delete)
+    }
 }

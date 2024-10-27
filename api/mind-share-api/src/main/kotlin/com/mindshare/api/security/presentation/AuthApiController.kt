@@ -22,6 +22,10 @@ class AuthApiController(
         throw NotImplementedError("Spring Security process login logic")
     }
 
+    override fun logout(userId: Long) {
+        authTokenUseCase.expireToken(userId)
+    }
+
     override fun reissueToken(request: ReissueTokenRequest): ReissueTokenResponse {
         val authToken = authTokenUseCase.reissueToken(request.accessToken, request.refreshToken)
         return ReissueTokenResponse(authToken.accessToken, authToken.refreshToken)

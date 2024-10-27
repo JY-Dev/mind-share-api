@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 interface AuthApi {
 
     @Operation(
-        summary = "이메일 회원 가입",
+        summary = "이메일 로그인",
         description = """
-                    이메일 회원 가입을 합니다."""
+                    이메일 기반 로그인을 합니다."""
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "정상"),
@@ -39,6 +40,23 @@ interface AuthApi {
     )
     @PostMapping("/login/email")
     fun loginEmail(@RequestBody request: LoginEmailRequest) : LoginResponse
+
+    @Operation(
+        summary = "로그아웃",
+        description = """
+                    로그아웃을 합니다."""
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "정상"),
+        ApiResponse(
+            responseCode = "401", description = "로그아웃 실패",
+            content = [Content(schema = Schema(implementation = ErrorResponse::class))]
+        ),
+        ApiResponse(responseCode = "500", description = "서버 오류",
+            content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+    )
+    @PostMapping("/logout")
+    fun logout(@AuthenticationPrincipal userId : Long)
 
     @Operation(
         summary = "토큰 재발급",
