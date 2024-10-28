@@ -1,3 +1,4 @@
+### 게시글 작성
 POST {{url}}/posts
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -5,4 +6,14 @@ Authorization: {{authToken}}
 {
   "title": "테스트",
   "content": "테스트입니다."
+}
+
+### 게시글 수정
+PUT {{url}}/posts/4
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "title": "테스트",
+  "content": "테스트입니다.33333"
 }

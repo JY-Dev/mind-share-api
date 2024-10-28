@@ -59,6 +59,16 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler(){
         )
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(BusinessAuthorizationException::class)
+    fun handleError(e : BusinessAuthorizationException): ErrorResponse {
+        log.debug(e.message)
+        return ErrorResponse(
+            e.message ?: "Unknown error",
+            e.errorCode
+        )
+    }
+
     override fun handleMethodArgumentNotValid(
         ex: MethodArgumentNotValidException,
         headers: HttpHeaders,
