@@ -22,3 +22,6 @@ Authorization: {{authToken}}
 DELETE {{url}}/posts/4
 Content-Type: application/json
 Authorization: {{authToken}}
+
+### 게시글 목록 조회
+GET {{url}}/posts?pageSize=40
