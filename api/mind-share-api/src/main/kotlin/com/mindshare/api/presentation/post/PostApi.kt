@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -29,9 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 interface PostApi {
 
     @Operation(
-        summary = "글 작성",
+        summary = "게시글 작성",
         description = """
-                    글을 작성 합니다."""
+                    게시글을 작성 합니다."""
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "정상"), ApiResponse(
@@ -51,9 +52,9 @@ interface PostApi {
     ): CreatePostResponse
 
     @Operation(
-        summary = "글 수정",
+        summary = "게시글 수정",
         description = """
-                    글을 수정 합니다."""
+                    게시글을 수정 합니다."""
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "정상"),
@@ -74,6 +75,26 @@ interface PostApi {
     @PutMapping("/{postId}")
     fun editPost(
         @RequestBody @Valid request: EditPostRequest,
+        @PathVariable postId: Long,
+        @AuthenticationPrincipal userId: Long
+    )
+
+    @Operation(
+        summary = "게시글 삭제",
+        description = """
+                    게시글을 삭제 합니다."""
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "정상"),
+        ApiResponse(
+            responseCode = "403",
+            description = "권한 없음",
+            content = [Content(schema = Schema(implementation = ErrorResponse::class))]
+        )
+    )
+    @SecurityRequirement(name = "AccessToken")
+    @DeleteMapping("/{postId}")
+    fun deletePost(
         @PathVariable postId: Long,
         @AuthenticationPrincipal userId: Long
     )

@@ -17,3 +17,8 @@ Authorization: {{authToken}}
   "title": "테스트",
   "content": "테스트입니다.33333"
 }
+
+### 게시글 삭제
+DELETE {{url}}/posts/4
+Content-Type: application/json
+Authorization: {{authToken}}
