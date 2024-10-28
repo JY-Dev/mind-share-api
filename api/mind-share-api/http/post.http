@@ -1,0 +1,8 @@
+POST {{url}}/posts
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "title": "테스트",
+  "content": "테스트입니다."
+}
