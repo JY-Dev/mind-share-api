@@ -1,5 +1,5 @@
 ### 이메일 로그인
-POST localhost:8080/auth/login/email
+POST {{url}}/auth/login/email
 Content-Type: application/json
 
 {
@@ -8,11 +8,11 @@ Content-Type: application/json
 }
 
 ### 로그아웃
-POST localhost:8080/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtaW5kLXNoYXJlIiwicGF5bG9hZCI6IntcInVzZXJJZFwiOjEsXCJ1c2VyVHlwZVwiOlwiVVNFUlwiLFwic2Vzc2lvbklkXCI6XCJhNGQyODIzMi02ZTRmLTRkZmUtODMyNy04YjdjYzJkNjA1Y2RcIn0iLCJpYXQiOjE3MzAwMzAxMTcsImV4cCI6MTczMDAzMDQxN30.kOCVPf51p87edQEXI2_ZzdJXxQK--qRocJU-mlqpuGk
+POST {{url}}/auth/logout
+Authorization: {{authToken}}
 
 ### 토큰 재발급
-POST localhost:8080/auth/issue-token
+POST {{url}}/auth/issue-token
 Content-Type: application/json
 
 {
