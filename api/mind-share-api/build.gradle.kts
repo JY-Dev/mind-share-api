@@ -7,6 +7,7 @@ dependencies {
     implementation(project(":core:jpa"))
     implementation(project(":domain:auth"))
     implementation(project(":domain:user"))
+    implementation(project(":domain:post"))
 
     //db
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -28,6 +29,8 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.12.6")
+
+    implementation("org.redisson:redisson-spring-boot-starter:3.37.0")
 
     testImplementation("org.springframework.security:spring-security-test")
 }
