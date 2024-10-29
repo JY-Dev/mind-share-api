@@ -10,7 +10,6 @@ import com.mindshare.domain.user.QUser
 import com.querydsl.core.types.Expression
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
-import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.JPQLQuery
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
