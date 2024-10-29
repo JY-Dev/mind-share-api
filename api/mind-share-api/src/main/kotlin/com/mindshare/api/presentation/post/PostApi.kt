@@ -4,7 +4,9 @@ import com.mindshare.api.core.error.ErrorResponse
 import com.mindshare.api.presentation.post.model.request.CreatePostRequest
 import com.mindshare.api.presentation.post.model.request.EditPostRequest
 import com.mindshare.api.presentation.post.model.response.CreatePostResponse
+import com.mindshare.api.presentation.post.model.response.GetPostResponse
 import com.mindshare.api.presentation.post.model.response.ListPostResponse
+import com.mindshare.domain.post.Post
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -133,4 +135,15 @@ interface PostApi {
             requiredMode = Schema.RequiredMode.REQUIRED)
         @RequestParam(required = true) @Valid @Positive pageSize : Int
     ) : ListPostResponse
+
+    @Operation(
+        summary = "게시글 상세 조회",
+        description = """
+                    게시글 상세를 조회합니다."""
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "정상")
+    )
+    @GetMapping("/{postId}")
+    fun getPost(@PathVariable postId: Long) : GetPostResponse
 }

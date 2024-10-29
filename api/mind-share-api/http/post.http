@@ -25,3 +25,15 @@ Authorization: {{authToken}}
 
 ### 게시글 목록 조회
 GET {{url}}/posts?pageSize=40
+
+### 게시글 조회
+GET {{url}}/posts/1
+
+### 게시글 조회
+GET {{url}}/posts/1
+
+### 게시글 조회
+GET {{url}}/posts/1
+
+### 게시글 조회
+GET {{url}}/posts/1

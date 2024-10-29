@@ -42,10 +42,12 @@ data class ListPostResponse(
         @Schema(
             description = """
         게시글 생성자 닉네임
+        닉네임이 null인 경우 삭제된 유저
         """",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            nullable = true
         )
-        val nickname: String,
+        val nickname: String?,
 
         @Schema(
             description = """

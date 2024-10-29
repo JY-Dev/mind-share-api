@@ -30,9 +30,14 @@ dependencies {
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
-    //implementation("org.redisson:redisson-spring-boot-starter:3.37.0")
+    implementation("org.redisson:redisson-spring-boot-starter:3.37.0")
 
     implementation("commons-codec:commons-codec:1.17.1")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
+    // 코루틴 테스트 라이브러리
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.testcontainers:testcontainers:1.19.0")
 }
