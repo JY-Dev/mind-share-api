@@ -2,18 +2,19 @@ import com.mindshare.api.infra.post.RedissonPostInteractionCounter
 import com.mindshare.domain.post.InteractionType
 import com.mindshare.domain.post.PostInteraction
 import com.mindshare.domain.post.PostInteractionRepository
-import org.junit.jupiter.api.*
-import org.mockito.Mockito.*
 import kotlinx.coroutines.*
-import org.redisson.api.RedissonClient
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.redisson.Redisson
+import org.redisson.api.RedissonClient
 import org.redisson.config.Config
-import org.junit.jupiter.api.Assertions.*
-import java.util.concurrent.Executors
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
+import java.util.concurrent.Executors
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

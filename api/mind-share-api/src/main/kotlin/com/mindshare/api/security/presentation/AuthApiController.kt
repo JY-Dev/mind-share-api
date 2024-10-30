@@ -1,7 +1,7 @@
 package com.mindshare.api.security.presentation
 
 import com.mindshare.api.core.error.ErrorCode
-import com.mindshare.api.core.error.ErrorResponse
+import com.mindshare.api.core.web.ErrorResponse
 import com.mindshare.api.security.auth.token.AuthTokenUseCase
 import com.mindshare.api.security.auth.token.error.RefreshTokenExpiredException
 import com.mindshare.api.security.auth.token.error.TokenSecurityWarnException

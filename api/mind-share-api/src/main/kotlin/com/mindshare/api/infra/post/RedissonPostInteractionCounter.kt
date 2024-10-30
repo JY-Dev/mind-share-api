@@ -23,7 +23,7 @@ class RedissonPostInteractionCounter(
         val atomicLong = redisson.getAtomicLong("interaction_count:${createRedisKey(postId, type)}")
 
         if (!atomicLong.isExists) {
-            initializeAtomicLong(postId, type ,atomicLong)
+            initializeAtomicLong(postId, type, atomicLong)
         }
 
         val newCount = atomicLong.incrementAndGet()
@@ -51,7 +51,7 @@ class RedissonPostInteractionCounter(
     override fun getCount(postId: Long, type: InteractionType): Long {
         val atomicLong = redisson.getAtomicLong("interaction_count:${createRedisKey(postId, type)}")
 
-        if(atomicLong.isExists.not()) {
+        if (atomicLong.isExists.not()) {
             initializeAtomicLong(postId, type, atomicLong)
         }
 
@@ -132,6 +132,7 @@ class RedissonPostInteractionCounter(
 
         modifiedPostIdsSet.delete()
     }
+
     companion object {
         private const val TTL_DURATION = 15L
     }

@@ -11,7 +11,7 @@ class CreatePostUseCase(
 ) {
 
     @Transactional
-    operator fun invoke(title : String, content : String, userId : Long) : Long {
+    operator fun invoke(title: String, content: String, userId: Long): Long {
         val post = Post(title, content, userId)
         val savedPost = postRepository.save(post)
 

@@ -36,7 +36,12 @@ class PostApiController(
         val page = postFinder.searchWithPaging(keyword, pageToken, pageSize)
         val content = page.data
             .map { item ->
-                ListPostResponse.ListPostItemResponse(item.postId, item.title, item.nickname, item.creationTime.toKstLocalDateTime())
+                ListPostResponse.ListPostItemResponse(
+                    item.postId,
+                    item.title,
+                    item.nickname,
+                    item.creationTime.toKstLocalDateTime()
+                )
             }
         val pagingResponse = PagingResponse(
             pageToken = page.pageToken,
@@ -49,7 +54,7 @@ class PostApiController(
         )
     }
 
-    override fun getPost(postId: Long)  : GetPostResponse {
+    override fun getPost(postId: Long): GetPostResponse {
         val (postDetail, viewCount) = getPostUseCase(postId)
         return GetPostResponse(
             title = postDetail.title,

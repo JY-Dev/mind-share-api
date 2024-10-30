@@ -1,7 +1,7 @@
 package com.mindshare.api.core.error
 
 open class BusinessException(
-    message : String,
+    message: String,
     val errorCode: ErrorCode
 ) : RuntimeException(message) {
 }

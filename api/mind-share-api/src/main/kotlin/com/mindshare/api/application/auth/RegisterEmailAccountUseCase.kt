@@ -20,19 +20,19 @@ class RegisterEmailAccountUseCase(
 
     @Transactional
     operator fun invoke(
-        nickname : String,
-        email : String,
+        nickname: String,
+        email: String,
         password: String
     ) {
 
         val existsNickname = userRepository.existsByNickname(nickname)
-        if(existsNickname) throw DuplicateNicknameException("Nickname already exists. nickname : $nickname")
+        if (existsNickname) throw DuplicateNicknameException("Nickname already exists. nickname : $nickname")
 
         val existsLoginId = accountRepository.existsByLoginIdAndAccountProvider(
             loginId = email,
             accountProvider = AccountProvider.EMAIL
         )
-        if(existsLoginId) throw DuplicateLoginIdException("already exists login id: $email")
+        if (existsLoginId) throw DuplicateLoginIdException("already exists login id: $email")
 
         val user = User(nickname)
         val savedUser = userRepository.save(user)

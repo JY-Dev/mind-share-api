@@ -21,7 +21,7 @@ import java.time.Instant
 @Service
 class PostFinder : QuerydslRepositorySupport(QPost::class.java) {
 
-    fun findPostDetail(postId : Long) : PostDetailModel? {
+    fun findPostDetail(postId: Long): PostDetailModel? {
         val qPost = QPost.post
         val qUser = QUser.user
 
@@ -90,7 +90,11 @@ class PostFinder : QuerydslRepositorySupport(QPost::class.java) {
         return querydsl!!.applySorting(order.sort, this)
     }
 
-    private fun JPQLQuery<PostListModel>.cursorPaging(qPost: QPost, pageToken: String?, order: PostOrder): JPQLQuery<PostListModel> {
+    private fun JPQLQuery<PostListModel>.cursorPaging(
+        qPost: QPost,
+        pageToken: String?,
+        order: PostOrder
+    ): JPQLQuery<PostListModel> {
 
         when (order) {
             PostOrder.POST_CREATION_TIME_DESC -> {

@@ -2,10 +2,10 @@ package com.jydev.mindshare.api.security.auth.token
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.mindshare.api.security.config.AuthProperties
 import com.mindshare.api.security.auth.token.JwtHelper
 import com.mindshare.api.security.auth.token.JwtHelper.Companion.resolveBearerToken
 import com.mindshare.api.security.auth.token.JwtHelper.TokenPayload
+import com.mindshare.api.security.config.AuthProperties
 import com.mindshare.domain.user.UserType
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach

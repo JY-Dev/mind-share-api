@@ -29,7 +29,7 @@ class JwtHelper(
         return issueToken(payload)
     }
 
-    fun getPayload(token : String) : TokenPayload =
+    fun getPayload(token: String): TokenPayload =
         getClaims(token)[PAYLOAD_KEY, String::class.java]?.let {
             objectMapper.readValue(it, TokenPayload::class.java)
         } ?: throw IllegalArgumentException("Payload does not exist")

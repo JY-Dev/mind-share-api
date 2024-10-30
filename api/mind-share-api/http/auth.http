@@ -3,8 +3,8 @@ POST {{url}}/auth/login/email
 Content-Type: application/json
 
 {
-  "email" : "test1234@test.com",
-  "password" : "test1234"
+  "email": "test1234@test.com",
+  "password": "test1234"
 }
 
 ### 로그아웃

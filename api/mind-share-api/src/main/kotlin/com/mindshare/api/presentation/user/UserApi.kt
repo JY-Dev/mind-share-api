@@ -1,6 +1,6 @@
 package com.mindshare.api.presentation.user
 
-import com.mindshare.api.core.error.ErrorResponse
+import com.mindshare.api.core.web.ErrorResponse
 import com.mindshare.api.presentation.user.model.request.ChangeNicknameRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -41,5 +41,5 @@ interface UserApi {
     )
     @SecurityRequirement(name = "AccessToken")
     @PatchMapping("/nickname")
-    fun changeNickname(@RequestBody @Valid request : ChangeNicknameRequest, @AuthenticationPrincipal userId : Long)
+    fun changeNickname(@RequestBody @Valid request: ChangeNicknameRequest, @AuthenticationPrincipal userId: Long)
 }

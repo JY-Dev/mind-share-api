@@ -4,11 +4,10 @@ import com.mindshare.api.application.post.DeletePostUseCase
 import com.mindshare.api.application.post.error.PostPermissionException
 import com.mindshare.domain.post.Post
 import com.mindshare.domain.post.PostRepository
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
-import java.util.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 
 class DeletePostUseCaseTest {
 

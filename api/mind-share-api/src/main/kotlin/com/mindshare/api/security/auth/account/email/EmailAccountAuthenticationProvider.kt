@@ -5,10 +5,10 @@ import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
 
 class EmailAccountAuthenticationProvider(
-    private val authenticateUserCase : EmailAccountAuthenticationUseCase
+    private val authenticateUserCase: EmailAccountAuthenticationUseCase
 ) : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication? {
-        if(authentication !is EmailAccountAuthentication) {
+        if (authentication !is EmailAccountAuthentication) {
             return null
         }
 

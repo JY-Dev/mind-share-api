@@ -1,5 +1,8 @@
-package com.mindshare.api.core.error
+package com.mindshare.api.core.web
 
+import com.mindshare.api.core.error.BusinessAuthorizationException
+import com.mindshare.api.core.error.BusinessException
+import com.mindshare.api.core.error.ErrorCode
 import com.mindshare.api.core.log.logger
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -15,13 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.util.WebUtils
 
 @RestControllerAdvice
-class GlobalExceptionHandler : ResponseEntityExceptionHandler(){
+class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
     private val log = logger()
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BusinessException::class)
-    fun handleError(e : BusinessException) : ErrorResponse {
+    fun handleError(e: BusinessException): ErrorResponse {
         log.debug(e.message)
         return ErrorResponse(
             e.message ?: "Unknown error",
@@ -61,7 +64,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler(){
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(BusinessAuthorizationException::class)
-    fun handleError(e : BusinessAuthorizationException): ErrorResponse {
+    fun handleError(e: BusinessAuthorizationException): ErrorResponse {
         log.debug(e.message)
         return ErrorResponse(
             e.message ?: "Unknown error",
@@ -90,7 +93,8 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler(){
         request: WebRequest
     ): ResponseEntity<Any> {
 
-        val exception = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST) as? Exception
+        val exception =
+            request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST) as? Exception
         val errorResponse = ErrorResponse(exception?.message ?: "Unknown error", ErrorCode.DEFAULT)
 
         return ResponseEntity(errorResponse, statusCode)

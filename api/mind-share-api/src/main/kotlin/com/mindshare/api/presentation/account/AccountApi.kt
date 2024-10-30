@@ -1,6 +1,6 @@
 package com.mindshare.api.presentation.account
 
-import com.mindshare.api.core.error.ErrorResponse
+import com.mindshare.api.core.web.ErrorResponse
 import com.mindshare.api.presentation.account.model.request.SignupEmailRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

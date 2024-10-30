@@ -6,10 +6,12 @@ import java.time.LocalDateTime
 
 data class ListPostResponse(
 
-    @Schema(description = """
+    @Schema(
+        description = """
         게시글 목록 데이터
         """",
-        requiredMode = Schema.RequiredMode.REQUIRED)
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
     val contents: List<ListPostItemResponse>,
 
     @Schema(

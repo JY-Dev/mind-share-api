@@ -17,7 +17,7 @@ class EditPostUseCase(
             ?: throw NoSuchElementException("Post with id $postId not found")
 
         val isSameUser = post.userId == userId
-        if(isSameUser.not()) {
+        if (isSameUser.not()) {
             throw PostPermissionException("Post permission not allowed. Post : $postId")
         }
 

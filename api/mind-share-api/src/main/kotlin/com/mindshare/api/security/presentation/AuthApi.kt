@@ -1,6 +1,6 @@
 package com.mindshare.api.security.presentation
 
-import com.mindshare.api.core.error.ErrorResponse
+import com.mindshare.api.core.web.ErrorResponse
 import com.mindshare.api.security.presentation.model.request.LoginEmailRequest
 import com.mindshare.api.security.presentation.model.request.ReissueTokenRequest
 import com.mindshare.api.security.presentation.model.response.LoginResponse
@@ -36,11 +36,13 @@ interface AuthApi {
             responseCode = "401", description = "로그인 실패",
             content = [Content(schema = Schema(implementation = ErrorResponse::class))]
         ),
-        ApiResponse(responseCode = "500", description = "서버 오류",
-            content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ApiResponse(
+            responseCode = "500", description = "서버 오류",
+            content = [Content(schema = Schema(implementation = ErrorResponse::class))]
+        )
     )
     @PostMapping("/login/email")
-    fun loginEmail(@RequestBody request: LoginEmailRequest) : LoginResponse
+    fun loginEmail(@RequestBody request: LoginEmailRequest): LoginResponse
 
 
     @Operation(
@@ -54,12 +56,14 @@ interface AuthApi {
             responseCode = "401", description = "로그아웃 실패",
             content = [Content(schema = Schema(implementation = ErrorResponse::class))]
         ),
-        ApiResponse(responseCode = "500", description = "서버 오류",
-            content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ApiResponse(
+            responseCode = "500", description = "서버 오류",
+            content = [Content(schema = Schema(implementation = ErrorResponse::class))]
+        )
     )
     @SecurityRequirement(name = "AccessToken")
     @PostMapping("/logout")
-    fun logout(@AuthenticationPrincipal userId : Long)
+    fun logout(@AuthenticationPrincipal userId: Long)
 
     @Operation(
         summary = "토큰 재발급",
@@ -72,9 +76,11 @@ interface AuthApi {
             responseCode = "401", description = "토큰 갱신 실패",
             content = [Content(schema = Schema(implementation = ErrorResponse::class))]
         ),
-        ApiResponse(responseCode = "500", description = "서버 오류",
-            content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ApiResponse(
+            responseCode = "500", description = "서버 오류",
+            content = [Content(schema = Schema(implementation = ErrorResponse::class))]
+        )
     )
     @PostMapping("/issue-token")
-    fun reissueToken(@RequestBody request: ReissueTokenRequest) : ReissueTokenResponse
+    fun reissueToken(@RequestBody request: ReissueTokenRequest): ReissueTokenResponse
 }

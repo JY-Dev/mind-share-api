@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 data class CreatePostResponse(
 
-    @Schema(description = """
+    @Schema(
+        description = """
         글 아이디
         """",
-        requiredMode = Schema.RequiredMode.REQUIRED)
-    val postId : Long
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    val postId: Long
 )

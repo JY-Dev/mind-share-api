@@ -25,7 +25,7 @@ class EmailAccountAuthenticationUseCase(
         val sameEmail = account.loginId == email
         val samePassword = passwordEncoder.matches(password, account.credential)
 
-        if(sameEmail.not() || samePassword.not()) {
+        if (sameEmail.not() || samePassword.not()) {
             throw AuthenticationServiceException("Email or Password not match")
         }
 
