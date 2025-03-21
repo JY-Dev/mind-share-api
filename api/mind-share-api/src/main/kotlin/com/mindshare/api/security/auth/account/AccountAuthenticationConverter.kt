@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.AuthenticationConverter
 
 class AccountAuthenticationConverter(
     private val objectMapper: ObjectMapper,
-) : AuthenticationConverter{
+) : AuthenticationConverter {
 
 
     override fun convert(request: HttpServletRequest): Authentication? {

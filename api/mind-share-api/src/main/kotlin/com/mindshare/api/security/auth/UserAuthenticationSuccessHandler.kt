@@ -20,7 +20,7 @@ class UserAuthenticationSuccessHandler(
         authentication: Authentication
     ) {
         try {
-            if(authentication !is UserAuthentication) {
+            if (authentication !is UserAuthentication) {
                 throw AuthenticationServiceException("Authentication is not of type UserAuthentication")
             }
 

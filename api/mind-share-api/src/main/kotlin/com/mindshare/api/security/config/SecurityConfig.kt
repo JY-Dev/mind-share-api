@@ -11,23 +11,20 @@ import com.mindshare.api.security.auth.token.AuthTokenAuthenticationConverter
 import com.mindshare.api.security.auth.token.AuthTokenUseCase
 import com.mindshare.api.security.auth.token.JwtAuthenticationProvider
 import com.mindshare.api.security.auth.token.JwtHelper
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.*
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher
+import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler
+import org.springframework.security.web.authentication.AuthenticationFilter
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
@@ -85,7 +82,8 @@ class SecurityConfig {
         authenticationEntryPoint: AuthenticationEntryPoint,
         authTokenUseCase: AuthTokenUseCase,
     ): AuthenticationFilter {
-        val loginAuthenticationManager = ProviderManager(listOf(EmailAccountAuthenticationProvider(loginAuthenticationUseCase)))
+        val loginAuthenticationManager =
+            ProviderManager(listOf(EmailAccountAuthenticationProvider(loginAuthenticationUseCase)))
         val loginAuthenticationConverter = AccountAuthenticationConverter(objectMapper)
 
         return AuthenticationFilter(loginAuthenticationManager, loginAuthenticationConverter).apply {

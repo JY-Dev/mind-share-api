@@ -2,7 +2,7 @@ package com.mindshare.api.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.mindshare.api.core.error.ErrorCode
-import com.mindshare.api.core.error.ErrorResponse
+import com.mindshare.api.core.web.ErrorResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType

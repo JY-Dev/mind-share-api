@@ -1,5 +1,6 @@
 package com.mindshare.api.application.post
 
+import com.mindshare.api.application.post.model.PostDetailModel
 import com.mindshare.api.application.post.model.PostListModel
 import com.mindshare.api.core.paging.PageInfo
 import com.mindshare.api.core.paging.PageInfo.Companion.pagination
@@ -20,6 +21,28 @@ import java.time.Instant
 @Service
 class PostFinder : QuerydslRepositorySupport(QPost::class.java) {
 
+    fun findPostDetail(postId: Long): PostDetailModel? {
+        val qPost = QPost.post
+        val qUser = QUser.user
+
+        return querydsl!!.createQuery<Post>()
+            .select(detailProjection(qPost, qUser))
+            .from(qPost)
+            .where(qPost.id.eq(postId))
+            .leftJoin(qUser).on(qPost.userId.eq(qUser.id))
+            .fetchOne()
+    }
+
+    private fun detailProjection(post: QPost, user: QUser): Expression<PostDetailModel> {
+        return Projections.constructor(
+            PostDetailModel::class.java,
+            post.title,
+            post.content,
+            user.nickname,
+            post.creationTime
+        )
+    }
+
     fun searchWithPaging(
         keyword: String? = null,
         pageToken: String? = null,
@@ -33,7 +56,7 @@ class PostFinder : QuerydslRepositorySupport(QPost::class.java) {
         return querydsl!!.createQuery<Post>()
             .select(listProjection(qPost, qUser))
             .from(qPost)
-            .join(qUser).on(qPost.userId.eq(qUser.id))
+            .leftJoin(qUser).on(qPost.userId.eq(qUser.id))
             .condition(qPost, keyword)
             .cursorPaging(qPost, pageToken, order)
             .limit(pageSize.toLong().plus(1))
@@ -67,7 +90,11 @@ class PostFinder : QuerydslRepositorySupport(QPost::class.java) {
         return querydsl!!.applySorting(order.sort, this)
     }
 
-    private fun JPQLQuery<PostListModel>.cursorPaging(qPost: QPost, pageToken: String?, order: PostOrder): JPQLQuery<PostListModel> {
+    private fun JPQLQuery<PostListModel>.cursorPaging(
+        qPost: QPost,
+        pageToken: String?,
+        order: PostOrder
+    ): JPQLQuery<PostListModel> {
 
         when (order) {
             PostOrder.POST_CREATION_TIME_DESC -> {

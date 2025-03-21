@@ -1,7 +1,7 @@
 package com.mindshare.api.core.error
 
 enum class ErrorCode(val description: String) {
-    DEFAULT("HTTP 기본 에러입니다."),
+    DEFAULT("미정"),
 
     // A01 (계정)
     A01001("중복된 닉네임"),

@@ -1,14 +1,12 @@
 package com.mindshare.api.presentation.post
 
-import com.mindshare.api.application.post.CreatePostUseCase
-import com.mindshare.api.application.post.DeletePostUseCase
-import com.mindshare.api.application.post.EditPostUseCase
-import com.mindshare.api.application.post.PostFinder
+import com.mindshare.api.application.post.*
 import com.mindshare.api.core.util.toKstLocalDateTime
 import com.mindshare.api.core.web.PagingResponse
 import com.mindshare.api.presentation.post.model.request.CreatePostRequest
 import com.mindshare.api.presentation.post.model.request.EditPostRequest
 import com.mindshare.api.presentation.post.model.response.CreatePostResponse
+import com.mindshare.api.presentation.post.model.response.GetPostResponse
 import com.mindshare.api.presentation.post.model.response.ListPostResponse
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,6 +15,7 @@ class PostApiController(
     private val createPostUseCase: CreatePostUseCase,
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
+    private val getPostUseCase: GetPostUseCase,
     private val postFinder: PostFinder
 ) : PostApi {
     override fun createPost(request: CreatePostRequest, userId: Long): CreatePostResponse {
@@ -37,7 +36,12 @@ class PostApiController(
         val page = postFinder.searchWithPaging(keyword, pageToken, pageSize)
         val content = page.data
             .map { item ->
-                ListPostResponse.ListPostItemResponse(item.postId, item.title, item.nickname, item.creationTime.toKstLocalDateTime())
+                ListPostResponse.ListPostItemResponse(
+                    item.postId,
+                    item.title,
+                    item.nickname,
+                    item.creationTime.toKstLocalDateTime()
+                )
             }
         val pagingResponse = PagingResponse(
             pageToken = page.pageToken,
@@ -47,6 +51,17 @@ class PostApiController(
         return ListPostResponse(
             contents = content,
             paging = pagingResponse
+        )
+    }
+
+    override fun getPost(postId: Long): GetPostResponse {
+        val (postDetail, viewCount) = getPostUseCase(postId)
+        return GetPostResponse(
+            title = postDetail.title,
+            content = postDetail.content,
+            viewCount = viewCount,
+            nickname = postDetail.nickname,
+            creationTime = postDetail.creationTime.toKstLocalDateTime()
         )
     }
 

@@ -4,15 +4,19 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 data class ReissueTokenResponse(
 
-    @Schema(description = """
+    @Schema(
+        description = """
         엑세스 토큰
         """",
-        requiredMode = Schema.RequiredMode.REQUIRED)
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
     val accessToken: String,
 
-    @Schema(description = """
+    @Schema(
+        description = """
         리프레시 토큰
         """",
-        requiredMode = Schema.RequiredMode.REQUIRED)
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
     val refreshToken: String
 )

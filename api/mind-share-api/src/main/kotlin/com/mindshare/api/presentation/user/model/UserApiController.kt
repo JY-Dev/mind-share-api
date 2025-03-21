@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class UserApiController(
-    private val changeNicknameUseCase : ChangeUserNicknameUseCase
+    private val changeNicknameUseCase: ChangeUserNicknameUseCase
 ) : UserApi {
 
     override fun changeNickname(request: ChangeNicknameRequest, userId: Long) {

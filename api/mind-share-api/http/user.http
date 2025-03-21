@@ -3,5 +3,5 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-  "nickname" : "test41241"
+  "nickname": "test41241"
 }

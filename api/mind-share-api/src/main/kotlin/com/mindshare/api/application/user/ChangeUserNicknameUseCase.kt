@@ -11,7 +11,7 @@ class ChangeUserNicknameUseCase(
 ) {
 
     @Transactional
-    operator fun invoke(nickname: String, userId : Long) {
+    operator fun invoke(nickname: String, userId: Long) {
 
         val user = userRepository.findById(userId)
             ?: throw NoSuchElementException("User not found")

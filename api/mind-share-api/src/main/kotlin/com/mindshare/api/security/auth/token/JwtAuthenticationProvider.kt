@@ -15,7 +15,7 @@ class JwtAuthenticationProvider(
 
         val token = authentication.accessToken
         val validToken = jwtHelper.isValidToken(token)
-        if(validToken.not()) {
+        if (validToken.not()) {
             return null
         }
 
